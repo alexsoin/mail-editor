@@ -5,30 +5,24 @@
 				<div class="flex flex-row gap-8 items-center">
 					<div class="flex flex-col gap-2">
 						<div class="opacity-50 font-light">Загрузить разметку:</div>
-						<label class="flex flex-row gap-3 justify-center items-center px-4 py-1 text-gray-200 border border-gray-500 rounded cursor-pointer transition-colors hover:text-sky-600 hover:border-sky-600">
+						<label class="flex flex-row gap-3 justify-center items-center px-4 py-1 bg-sky-900 bg-opacity-30 text-sky-600 border border-sky-600 rounded cursor-pointer transition-colors hover:opacity-70">
 							<svg class="w-8 h-8 fill-current" fill="currentColor" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
 									<path d="M16.88 9.1A4 4 0 0 1 16 17H5a5 5 0 0 1-1-9.9V7a3 3 0 0 1 4.52-2.59A4.98 4.98 0 0 1 17 8c0 .38-.04.74-.12 1.1zM11 11h3l-4-4-4 4h3v3h2v-3z" />
 							</svg>
 							<span class="text-base leading-normal">{{ loadedFile || 'Выберите разметку' }}</span>
-							<input type='file'
-								name="myFile"
-								id="myFile"
-								ref="myFile"
-								@change="uploadFile"
-								class="hidden"
-							/>
+							<input class="hidden" type="file" ref="inputFileLoad" @change="uploadFile" accept=".json" />
 						</label>
 					</div>
 					<div>
 						<label class="flex flex-col gap-2">
 							<span class="flex flex-row gap-6">
 								<span class="opacity-50 font-light">Название файла:</span>
-								<div class="flex items-center text-sm">
-									<input type="checkbox" id="is-save-date"  class="opacity-0 absolute h-8 w-8"
+								<div class="flex items-center text-sm hover:opacity-90">
+									<input type="checkbox" id="is-save-date"  class="opacity-0 absolute h-8 w-8 cursor-pointer"
 										v-model="isSaveDate"
 									/>
-									<div class="bg-transparent border rounded-md border-cyan-400 w-4 h-4 flex flex-shrink-0 justify-center items-center mr-2 focus-within:border-cyan-500 cursor-pointer">
-										<svg class="fill-current hidden w-2 h-2 text-cyan-400 pointer-events-none fill-current" version="1.1" viewBox="0 0 17 12" xmlns="http://www.w3.org/2000/svg">
+									<div class="bg-transparent border rounded-xl border-cyan-400 w-4 h-4 flex flex-shrink-0 justify-center items-center mr-1 focus-within:border-cyan-500 cursor-pointer">
+										<svg class="fill-current hidden w-2 h-2 text-cyan-400 pointer-events-none" version="1.1" viewBox="0 0 17 12" xmlns="http://www.w3.org/2000/svg">
 										<g fill="none" fill-rule="evenodd">
 											<g transform="translate(-9 -11)" class="fill-current">
 											<path d="m25.576 11.414c0.56558 0.55188 0.56558 1.4439 0 1.9961l-9.404 9.176c-0.28213 0.27529-0.65247 0.41385-1.0228 0.41385-0.37034 0-0.74068-0.13855-1.0228-0.41385l-4.7019-4.588c-0.56584-0.55188-0.56584-1.4442 0-1.9961 0.56558-0.55214 1.4798-0.55214 2.0456 0l3.679 3.5899 8.3812-8.1779c0.56558-0.55214 1.4798-0.55214 2.0456 0z" />
@@ -39,7 +33,7 @@
 									<label for="is-save-date" class="select-none text-xs text-cyan-600 cursor-pointer font-normal">Добавлять дату в имя файла</label>
 								</div>
 							</span>
-							<input type="text" class="bg-transparent border p-2 rounded border-gray-500 text-gray-200 focus:border-sky-600"
+							<input type="text" class="bg-transparent border p-2 rounded border-gray-500 text-gray-300 bg-gray-700 bg-opacity-20 focus:border-sky-600 focus:bg-sky-900 focus:bg-opacity-5"
 								v-model="nameFile"
 								@keypress="filterInputFileName($event)"
 							>
@@ -60,8 +54,8 @@
 						</a>
 					</div>
 					<div class="flex flex-row justify-end gap-5">
-						<button class="py-2 px-4 border bg-teal-900 bg-opacity-30 border-teal-600 text-teal-600 rounded hover:opacity-70 transition-opacity" @click="saveDesign">Сохранить разметку</button>
-						<button class="py-2 px-4 border bg-lime-900 bg-opacity-30 border-lime-600 text-lime-600 rounded hover:opacity-70 transition-opacity" @click="exportHtml">Сохранить HTML</button>
+						<button class="py-2 px-6 border bg-teal-900 bg-opacity-30 border-teal-600 text-teal-600 rounded hover:opacity-70 transition-opacity" @click="saveDesign">Сохранить разметку</button>
+						<button class="py-2 px-6 border bg-lime-900 bg-opacity-30 border-lime-600 text-lime-600 rounded hover:opacity-70 transition-opacity" @click="exportHtml">Сохранить HTML</button>
 					</div>
 				</div>
 			</div>
@@ -102,10 +96,9 @@
 				locale: "ru",
 				projectId: 0,
 				tools: {
-					// disable image tool
-					// image: {
-					//   enabled: false
-					// }
+					image: {
+					  // enabled: false // disable image tool
+					}
 				},
 				options: {},
 				appearance: {
@@ -135,7 +128,7 @@
 				}
 			},
 			uploadFile() {
-				const fileUpload = this.$refs.myFile.files[0];
+				const fileUpload = this.$refs.inputFileLoad.files[0];
 				const fileName = fileUpload.name;
 
 				let reader = new FileReader();
