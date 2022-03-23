@@ -24,7 +24,9 @@
 							<span class="flex flex-row gap-6">
 								<span class="opacity-50 font-light">Название файла:</span>
 								<div class="flex items-center text-sm">
-									<input type="checkbox" id="is-save-date" v-model="isSaveDate" class="opacity-0 absolute h-8 w-8" />
+									<input type="checkbox" id="is-save-date"  class="opacity-0 absolute h-8 w-8"
+										v-model="isSaveDate"
+									/>
 									<div class="bg-transparent border rounded-md border-cyan-400 w-4 h-4 flex flex-shrink-0 justify-center items-center mr-2 focus-within:border-cyan-500 cursor-pointer">
 										<svg class="fill-current hidden w-2 h-2 text-cyan-400 pointer-events-none fill-current" version="1.1" viewBox="0 0 17 12" xmlns="http://www.w3.org/2000/svg">
 										<g fill="none" fill-rule="evenodd">
@@ -37,13 +39,16 @@
 									<label for="is-save-date" class="select-none text-xs text-cyan-600 cursor-pointer font-normal">Добавлять дату в имя файла</label>
 								</div>
 							</span>
-							<input type="text" class="bg-transparent border p-2 rounded border-gray-500 text-gray-200 focus:border-sky-600" v-model="nameFile">
+							<input type="text" class="bg-transparent border p-2 rounded border-gray-500 text-gray-200 focus:border-sky-600"
+								v-model="nameFile"
+								@keypress="filterInputFileName($event)"
+							>
 						</label>
 						</div>
 				</div>
 
 				<div class="flex flex-col gap-2">
-					<div class="flex flex-row gap-3 justify-between">
+					<div class="flex flex-row gap-5 justify-between">
 						<div class="flex flex-row gap-3">
 							<span class="opacity-50 font-light">Имя файла:</span>
 							<span class="text-cyan-600 underline font-light">{{ getFileName }}</span>
@@ -54,7 +59,7 @@
 							</svg>
 						</a>
 					</div>
-					<div class="flex flex-row gap-3">
+					<div class="flex flex-row justify-end gap-5">
 						<button class="py-2 px-4 border bg-teal-900 bg-opacity-30 border-teal-600 text-teal-600 rounded hover:opacity-70 transition-opacity" @click="saveDesign">Сохранить разметку</button>
 						<button class="py-2 px-4 border bg-lime-900 bg-opacity-30 border-lime-600 text-lime-600 rounded hover:opacity-70 transition-opacity" @click="exportHtml">Сохранить HTML</button>
 					</div>
@@ -86,35 +91,49 @@
 			EmailEditor
 		},
 		data() {
-      return {
+			return {
+				listInputFileName: {
+					include: ['-', '_'],
+					exclude: ['.', ',']
+				},
 				isSaveDate: false,
 				nameFile: "name",
 				loadedFile: "",
-        locale: "ru",
-        projectId: 0, // replace with your project id
-        tools: {
-          // disable image tool
-          // image: {
-          //   enabled: false
-          // }
-        },
-        options: {},
-        appearance: {
-          theme: 'dark',
-          panels: {
-            tools: {
-              dock: 'right'
-            }
-          }
-        }
-      }
-    },
+				locale: "ru",
+				projectId: 0,
+				tools: {
+					// disable image tool
+					// image: {
+					//   enabled: false
+					// }
+				},
+				options: {},
+				appearance: {
+					theme: 'dark',
+					panels: {
+						tools: {
+							dock: 'right'
+						}
+					}
+				}
+			}
+		},
 		computed: {
 			getFileName() {
 				return this.isSaveDate ? `${this.nameFile}.${this.getDate()}` : this.nameFile
 			}
 		},
 		methods: {
+			filterInputFileName(evt) {
+				if (
+					( /^\W$/.test(evt.key) && !/^[ЁёА-я]$/.test(evt.key) && !this.listInputFileName.include.includes(evt.key) ) ||
+					this.listInputFileName.exclude.includes(evt.key)
+				) {
+					evt.preventDefault();
+				} else {
+					return true;
+				}
+			},
 			uploadFile() {
 				const fileUpload = this.$refs.myFile.files[0];
 				const fileName = fileUpload.name;
