@@ -1,0 +1,23 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+input:checked + div {
+	@apply border-cyan-500;
+}
+input:checked + div svg {
+	@apply block;
+}
+
+.unlayer-editor {
+	width: 100%;
+	height: auto;
+}
+
+* {
+
+	&:focus, &:active {
+		box-shadow: none;
+		outline: none;
+	}
+}
