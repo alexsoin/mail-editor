@@ -144,6 +144,9 @@
 				return new Date().toLocaleDateString();
 			},
 			editorReady() {
+				this.$refs.emailEditor.editor.setBodyValues({
+					contentWidth: "600px",
+				});
 				this.$refs.emailEditor.editor.registerCallback('image', function(file, done) {
 					alert("В данный момент загрузка изображений не поддерживается! Вставьте ссылку на изображение.")
 				})
