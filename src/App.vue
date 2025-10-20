@@ -62,11 +62,19 @@
 
 			<div class="flex h-full">
 				<EmailEditor
+					:project-id="1"
+					locale="ru-RU"
 					:appearance="appearance"
-					:project-id="projectId"
-					:locale="locale"
-					:tools="tools"
-					:options="options"
+					:options="{
+						features: {
+							audit: false,
+							beta: false,
+							devTab: false,
+							stockImages: false,
+							undoRedo: true,
+							ai: false,
+						},
+					}"
 					ref="emailEditor"
 					@load="editorLoaded"
 					@ready="editorReady"
@@ -115,6 +123,9 @@
 			getFileName() {
 				return this.isSaveDate ? `${this.nameFile}.${this.getDate()}` : this.nameFile
 			}
+		},
+		mounted: () => {
+			console.log('version: vue-2');
 		},
 		methods: {
 			filterInputFileName(evt) {
